@@ -1,2 +1,1 @@
-# movies-explorer-api
-App for saving your favourite films
+Дипломный проект movies-explorer
