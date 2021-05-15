@@ -6,7 +6,7 @@ const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes');
 const { centralizedErrorHandler } = require('./middlewares/centralizedErrorHandler');
 
-const { PORT = 3000, MONGO_DB } = process.env;
+const { PORT = 3000, MONGO_DB = 'mongodb://localhost:27017/bitfilmsdb' } = process.env;
 
 const app = express();
 
