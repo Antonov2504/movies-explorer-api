@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes');
-const { limiter } = require('./middlewares/limiter');
+// const { limiter } = require('./middlewares/limiter');
 const { centralizedErrorHandler } = require('./middlewares/centralizedErrorHandler');
 
 const { PORT = 3000, MONGO_DB = 'mongodb://localhost:27017/bitfilmsdb' } = process.env;
@@ -21,7 +21,7 @@ mongoose.connect(MONGO_DB, {
 
 app.enable('trust proxy');
 // app.use(helmet());
-app.use(limiter);
+// app.use(limiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(requestLogger);
