@@ -19,6 +19,7 @@ mongoose.connect(MONGO_DB, {
   useUnifiedTopology: true,
 });
 
+app.enable('trust proxy');
 // app.use(helmet());
 app.use(limiter);
 app.use(express.json());
