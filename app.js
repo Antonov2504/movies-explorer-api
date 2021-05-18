@@ -1,5 +1,5 @@
 const express = require('express');
-const helmet = require('helmet');
+// const helmet = require('helmet');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
@@ -18,7 +18,7 @@ mongoose.connect(MONGO_DB, {
 });
 
 app.enable('trust proxy');
-app.use(helmet());
+// app.use(helmet());
 // app.use(limiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
