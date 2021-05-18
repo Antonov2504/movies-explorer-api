@@ -1,24 +1,25 @@
 const { celebrate, Joi } = require('celebrate');
+const { urlRegex, nameRuRegex, nameEnRegex } = require('./constants');
 
 const validateLogin = celebrate({
   body: Joi.object().keys({
-    email: Joi.string().email(),
-    password: Joi.string().pattern(/^[a-zA-Z0-9]{3,30}$/),
+    email: Joi.string().email().required(),
+    password: Joi.string().pattern(/^[a-zA-Z0-9:%.,_+~#=]+$/).required(),
   }),
 });
 
 const validateCreateUser = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().pattern(/[\wа-я\sё]{2,30}/i),
+    name: Joi.string().pattern(/[\wа-я\sё]{2,30}/i).required(),
     email: Joi.string().email().required(),
-    password: Joi.string().required(),
+    password: Joi.string().pattern(/^[a-zA-Z0-9:%.,_+~#=]+$/).required(),
   }),
 });
 
 const validateUserInfo = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().required(),
-    email: Joi.string().email(),
+    name: Joi.string().pattern(/[\wа-я\sё]{2,30}/i).required(),
+    email: Joi.string().email().required(),
   }),
 });
 
@@ -29,12 +30,12 @@ const validateMovie = celebrate({
     duration: Joi.number().required(),
     year: Joi.string().required(),
     description: Joi.string().required(),
-    image: Joi.string().required().pattern(/^https?:\/\/[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&\/=]*)?/i),
-    trailer: Joi.string().required().pattern(/^https?:\/\/[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&\/=]*)?/i),
-    thumbnail: Joi.string().required().pattern(/^https?:\/\/[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&\/=]*)?/i),
+    image: Joi.string().required().pattern(urlRegex),
+    trailer: Joi.string().required().pattern(urlRegex),
+    thumbnail: Joi.string().required().pattern(urlRegex),
     movieId: Joi.number().required(),
-    nameRU: Joi.string().required(),
-    nameEN: Joi.string().required(),
+    nameRU: Joi.string().required().pattern(nameRuRegex),
+    nameEN: Joi.string().required().pattern(nameEnRegex),
   }),
 });
 

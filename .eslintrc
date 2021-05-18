@@ -8,9 +8,6 @@
           "_id"
         ]
       }
-    ],
-    "no-useless-escape": [
-      "off"
     ]
   }
 }

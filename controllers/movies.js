@@ -2,7 +2,7 @@ const Movie = require('../models/movie');
 const errorHandler = require('../errors/error-handler');
 const ForbiddenError = require('../errors/forbidden-error');
 
-module.exports.getMovies = (req, res, next) => Movie.find({})
+module.exports.getMovies = (req, res, next) => Movie.find({ owner: req.user._id })
   .orFail()
   .then((movies) => res.send({ data: movies }))
   .catch((err) => {

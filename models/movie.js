@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const validator = require('validator');
+const { nameRuRegex, nameEnRegex } = require('../utils/constants');
 
 const movieSchema = new mongoose.Schema({
   country: {
@@ -26,8 +28,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(link) {
-        const regex = /^https?:\/\/[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&\/=]*)?/i;
-        return regex.test(link);
+        return validator.isURL(link);
       },
     },
   },
@@ -36,8 +37,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(link) {
-        const regex = /^https?:\/\/[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&\/=]*)?/i;
-        return regex.test(link);
+        return validator.isURL(link);
       },
     },
   },
@@ -46,8 +46,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(link) {
-        const regex = /^https?:\/\/[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&\/=]*)?/i;
-        return regex.test(link);
+        return validator.isURL(link);
       },
     },
   },
@@ -65,8 +64,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(nameRu) {
-        const regex = /^[а-я\sё:%._+~#=]{1,30}/gi;
-        return regex.test(nameRu);
+        return nameRuRegex.test(nameRu);
       },
     },
   },
@@ -75,8 +73,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
     validate: {
       validator(nameEn) {
-        const regex = /^[\w\s:%._+~#=]{1,30}/gi;
-        return regex.test(nameEn);
+        return nameEnRegex.test(nameEn);
       },
     },
   },

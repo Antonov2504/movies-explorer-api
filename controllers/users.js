@@ -2,7 +2,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const errorHandler = require('../errors/error-handler');
-const AuthError = require('../errors/auth-error');
 const ValidationError = require('../errors/validation-error');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
@@ -13,6 +12,7 @@ module.exports.createUser = (req, res, next) => {
   if (!name || !email || !password) {
     const error = new ValidationError('Необходимо заполнить поля Имя, Почта и Пароль');
     next(error);
+    return;
   }
 
   bcrypt.hash(password, 10)
@@ -64,6 +64,7 @@ module.exports.updateUserInfo = (req, res, next) => {
         CastErrorMessage: 'Переданы некорректные данные',
         ValidationErrorMessage: 'Ошибка валидации данных',
         DocumentNotFoundErrorMessage: 'Пользователь с указанным id не найден',
+        MongoDuplicateEmailErrorMessage: 'Пользователь с таким Email уже зарегистрирован',
       });
     });
 };
@@ -80,7 +81,6 @@ module.exports.login = (req, res, next) => {
       res.send({ token });
     })
     .catch((err) => {
-      const error = new AuthError(err.message);
-      next(error);
+      next(err);
     });
 };
