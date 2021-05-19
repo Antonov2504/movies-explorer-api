@@ -1,10 +1,10 @@
 const express = require('express');
-// const helmet = require('helmet');
+const helmet = require('helmet');
 const mongoose = require('mongoose');
 const { errors } = require('celebrate');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const router = require('./routes');
-// const { limiter } = require('./middlewares/limiter');
+const { limiter } = require('./middlewares/limiter');
 const { centralizedErrorHandler } = require('./middlewares/centralizedErrorHandler');
 const { PORT, MONGO_DB } = require('./utils/constants');
 
@@ -18,8 +18,8 @@ mongoose.connect(MONGO_DB, {
 });
 
 app.enable('trust proxy');
-// app.use(helmet());
-// app.use(limiter);
+app.use(helmet());
+app.use(limiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(requestLogger);
