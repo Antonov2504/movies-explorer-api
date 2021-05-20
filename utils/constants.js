@@ -10,6 +10,22 @@ const {
   JWT_SECRET = 'dev-secret',
 } = process.env;
 
+const messages = {
+  authErrorMessage: 'Необходима авторизация',
+  castErrorMessage: 'Переданы некорректные данные',
+  deleteMovieMessage: 'Фильм удален',
+  deleteMovieErrorMessage: 'Доступ запрещен. Возможно удаление только своего фильма',
+  emptyMoviesMessage: 'Здесь будут представлены Ваши фильмы',
+  emptySignupMessage: 'Необходимо заполнить поля Имя, Почта и Пароль',
+  loginErrorMessage: 'Неправильные почта или пароль',
+  mongoDuplicateEmailErrorMessage: 'Пользователь с таким Email уже зарегистрирован',
+  movieNotFoundErrorMessage: 'Фильм с указанным id не найден',
+  routerNotFoundErrorMessage: 'Запрашиваемый ресурс не найден',
+  userNotFoundErrorMessage: 'Пользователь с указанным id не найден',
+  validationEmailErrorMessage: 'Некорректный email',
+  validationErrorMessage: 'Ошибка валидации данных',
+};
+
 module.exports = {
   NODE_ENV,
   PORT,
@@ -18,4 +34,5 @@ module.exports = {
   urlRegex,
   nameRuRegex,
   nameEnRegex,
+  messages,
 };

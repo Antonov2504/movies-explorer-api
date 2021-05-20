@@ -3,14 +3,22 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const errorHandler = require('../errors/error-handler');
 const ValidationError = require('../errors/validation-error');
+const { messages } = require('../utils/constants');
+const { JWT_SECRET } = require('../utils/constants');
 
-const { NODE_ENV, JWT_SECRET } = process.env;
+const {
+  castErrorMessage,
+  emptySignupMessage,
+  mongoDuplicateEmailErrorMessage,
+  userNotFoundErrorMessage,
+  validationErrorMessage,
+} = messages;
 
 module.exports.createUser = (req, res, next) => {
   const { name, email, password } = req.body;
 
   if (!name || !email || !password) {
-    const error = new ValidationError('Необходимо заполнить поля Имя, Почта и Пароль');
+    const error = new ValidationError(emptySignupMessage);
     next(error);
     return;
   }
@@ -28,8 +36,8 @@ module.exports.createUser = (req, res, next) => {
     }))
     .catch((err) => {
       errorHandler(err, next, {
-        ValidationErrorMessage: 'Ошибка валидации данных',
-        MongoDuplicateEmailErrorMessage: 'Пользователь с таким Email уже зарегистрирован',
+        validationErrorMessage,
+        mongoDuplicateEmailErrorMessage,
       });
     });
 };
@@ -39,7 +47,7 @@ module.exports.getUserInfo = (req, res, next) => User.findById(req.user._id)
   .then((user) => res.send({ data: user }))
   .catch((err) => {
     errorHandler(err, next, {
-      DocumentNotFoundErrorMessage: 'Пользователь с указанным id не найден',
+      documentNotFoundErrorMessage: userNotFoundErrorMessage,
     });
   });
 
@@ -61,10 +69,10 @@ module.exports.updateUserInfo = (req, res, next) => {
     .then((user) => res.send({ data: user }))
     .catch((err) => {
       errorHandler(err, next, {
-        CastErrorMessage: 'Переданы некорректные данные',
-        ValidationErrorMessage: 'Ошибка валидации данных',
-        DocumentNotFoundErrorMessage: 'Пользователь с указанным id не найден',
-        MongoDuplicateEmailErrorMessage: 'Пользователь с таким Email уже зарегистрирован',
+        castErrorMessage,
+        validationErrorMessage,
+        documentNotFoundErrorMessage: userNotFoundErrorMessage,
+        mongoDuplicateEmailErrorMessage,
       });
     });
 };
@@ -75,7 +83,7 @@ module.exports.login = (req, res, next) => {
     .then((user) => {
       const token = jwt.sign(
         { _id: user._id },
-        NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+        JWT_SECRET,
         { expiresIn: '7d' },
       );
       res.send({ token });

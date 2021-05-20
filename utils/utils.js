@@ -4,7 +4,7 @@ const { urlRegex, nameRuRegex, nameEnRegex } = require('./constants');
 const validateLogin = celebrate({
   body: Joi.object().keys({
     email: Joi.string().email().required(),
-    password: Joi.string().pattern(/^[a-zA-Z0-9:%.,_+~#=]+$/).required(),
+    password: Joi.string().pattern(/^[a-zA-Z0-9:%.,_+~#=@]+$/).required(),
   }),
 });
 
@@ -12,7 +12,7 @@ const validateCreateUser = celebrate({
   body: Joi.object().keys({
     name: Joi.string().pattern(/[\wа-я\sё]{2,30}/i).required(),
     email: Joi.string().email().required(),
-    password: Joi.string().pattern(/^[a-zA-Z0-9:%.,_+~#=]+$/).required(),
+    password: Joi.string().pattern(/^[a-zA-Z0-9:%.,_+~#=@]+$/).required(),
   }),
 });
 

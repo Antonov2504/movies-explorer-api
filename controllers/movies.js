@@ -1,14 +1,27 @@
 const Movie = require('../models/movie');
 const errorHandler = require('../errors/error-handler');
 const ForbiddenError = require('../errors/forbidden-error');
+const { messages } = require('../utils/constants');
+
+const {
+  castErrorMessage,
+  deleteMovieErrorMessage,
+  deleteMovieMessage,
+  emptyMoviesMessage,
+  movieNotFoundErrorMessage,
+  validationErrorMessage,
+} = messages;
 
 module.exports.getMovies = (req, res, next) => Movie.find({ owner: req.user._id })
-  .orFail()
-  .then((movies) => res.send({ data: movies }))
+  .then((movies) => {
+    if (movies.length) {
+      return res.send({ data: movies });
+    }
+    return res.send({ message: emptyMoviesMessage });
+  })
   .catch((err) => {
     errorHandler(err, next, {
-      CastErrorMessage: 'Переданы некорректные данные',
-      DocumentNotFoundErrorMessage: 'Фильмы не найдены',
+      castErrorMessage,
     });
   });
 
@@ -40,37 +53,49 @@ module.exports.createMovie = (req, res, next) => {
     nameRU,
     nameEN,
   })
-    .then((movie) => res.send({ data: movie }))
+    .then((movie) => res.status(201).send({
+      country: movie.country,
+      director: movie.director,
+      duration: movie.duration,
+      year: movie.year,
+      description: movie.description,
+      image: movie.image,
+      trailer: movie.trailer,
+      thumbnail: movie.thumbnail,
+      movieId: movie.movieId,
+      nameRU: movie.nameRU,
+      nameEN: movie.nameEN,
+    }))
     .catch((err) => {
       errorHandler(err, next, {
-        CastErrorMessage: 'Переданы некорректные данные',
-        ValidationErrorMessage: 'Ошибка валидации данных',
+        castErrorMessage,
+        validationErrorMessage,
       });
     });
 };
 
 module.exports.deleteMovie = (req, res, next) => {
   const { movieId } = req.params;
-  Movie.findById(movieId)
+  Movie.findById(movieId).select('+owner')
     .orFail()
     .then((movie) => {
       if (movie.owner.equals(req.user._id)) {
         return Movie.findByIdAndRemove(movieId)
           .orFail()
-          .then(res.send({ message: 'Фильм удален' }))
+          .then(res.send({ message: deleteMovieMessage }))
           .catch((err) => {
             errorHandler(err, next, {
-              CastErrorMessage: 'Переданы некорректные данные',
-              DocumentNotFoundErrorMessage: 'Фильм с указанным id не найден',
+              castErrorMessage,
+              documentNotFoundErrorMessage: movieNotFoundErrorMessage,
             });
           });
       }
-      throw new ForbiddenError('Доступ запрещен. Возможно удаление только своего фильма');
+      throw new ForbiddenError(deleteMovieErrorMessage);
     })
     .catch((err) => {
       errorHandler(err, next, {
-        CastErrorMessage: 'Переданы некорректные данные',
-        DocumentNotFoundErrorMessage: 'Фильм с указанным id не найден',
+        castErrorMessage,
+        documentNotFoundErrorMessage: movieNotFoundErrorMessage,
       });
     });
 };
