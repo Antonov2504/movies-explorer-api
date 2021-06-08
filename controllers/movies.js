@@ -54,6 +54,7 @@ module.exports.createMovie = (req, res, next) => {
     nameEN,
   })
     .then((movie) => res.status(201).send({
+      _id: movie._id,
       country: movie.country,
       director: movie.director,
       duration: movie.duration,
