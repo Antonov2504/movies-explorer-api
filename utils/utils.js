@@ -10,7 +10,7 @@ const validateLogin = celebrate({
 
 const validateCreateUser = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().pattern(/[\wа-я\sё]{2,30}/i).required(),
+    name: Joi.string().pattern(/^[a-zA-Zа-яА-Я\sё-]{2,30}$/i).required(),
     email: Joi.string().email().required(),
     password: Joi.string().pattern(/^[a-zA-Z0-9:%.,_+~#=@]+$/).required(),
   }),
@@ -18,7 +18,7 @@ const validateCreateUser = celebrate({
 
 const validateUserInfo = celebrate({
   body: Joi.object().keys({
-    name: Joi.string().pattern(/[\wа-я\sё]{2,30}/i).required(),
+    name: Joi.string().pattern(/^[a-zA-Zа-яА-Я\sё-]{2,30}$/i).required(),
     email: Joi.string().email().required(),
   }),
 });
