@@ -1,8 +1,8 @@
 require('dotenv').config();
 
 const urlRegex = /(https?:\/\/(([\w-]+\.)+)+([\w])+((\/[a-z_0-9\-:~\\.%\\/?#[\]@!$&'\\(\\)*+,;=]+)+)?)/i;
-const nameRuRegex = /[А-Яа-я\sё:%.,_+~#=0-9]+/i;
-const nameEnRegex = /^[\w\s:%.,_+~#=]+/i;
+const nameRuRegex = /^[A-Za-zА-Яа-я\sё:%.,_+~#=0-9]+/i;
+const nameEnRegex = /^[A-Za-zА-Яа-я\sё:%.,_+~#=0-9]+/i;
 const {
   NODE_ENV = 'dev',
   PORT = 3000,
