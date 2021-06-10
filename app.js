@@ -12,8 +12,8 @@ const CorsError = require('./errors/cors-error');
 
 const whitelist = [
   'http://localhost:3000',
-  'http://antonov.movies-explorer.nomoredomains.club/',
-  'https://antonov.movies-explorer.nomoredomains.club/',
+  'http://antonov.movies-explorer.nomoredomains.club',
+  'https://antonov.movies-explorer.nomoredomains.club',
 ];
 const corsOptions = {
   origin(origin, callback) {
